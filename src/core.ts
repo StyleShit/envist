@@ -1,6 +1,8 @@
 type Env = Record<string, unknown>;
 
-type Schema = Record<string, (value: unknown) => any>;
+type Schema = Record<string, Parser>;
+
+type Parser = (value: unknown) => any;
 
 type SchemaToEnv<TSchema extends Schema> = {
 	[K in keyof TSchema]: ReturnType<TSchema[K]>;
@@ -23,15 +25,33 @@ export function resetEnv() {
 export function parseEnv<TSchema extends Schema>(
 	schema: TSchema,
 ): Prettify<SchemaToEnv<TSchema>> {
-	const parsedEnv: Record<string, unknown> = {};
+	return new Proxy({} as Record<string, unknown>, {
+		get(target, key) {
+			if (typeof key === 'symbol') {
+				throw new Error('Symbol keys are not supported');
+			}
 
-	Object.entries(schema).forEach(([key, parser]) => {
-		if (!(key in env)) {
-			throw new Error(`Missing environment variable \`${key}\``);
-		}
+			if (key in target) {
+				return target[key];
+			}
 
-		parsedEnv[key] = parser(env[key]);
-	});
+			if (!(key in env)) {
+				throw new Error(`Missing environment variable \`${key}\``);
+			}
 
-	return parsedEnv as SchemaToEnv<TSchema>;
+			const parser = schema[key];
+
+			if (!parser) {
+				throw new Error(`No parser was set for \`${key}\``);
+			}
+
+			try {
+				target[key] = parser(env[key]);
+			} catch {
+				throw new Error(`Can't parse environment variable \`${key}\``);
+			}
+
+			return target[key];
+		},
+	}) as SchemaToEnv<TSchema>;
 }

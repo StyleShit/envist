@@ -20,15 +20,30 @@ describe('Envist Core', () => {
 		});
 
 		// Assert.
-		expect(env).toStrictEqual({
-			number: 123,
-			string: 'test',
-		});
+		expect(env.number).toBe(123);
+		expect(env.string).toBe('test');
 
 		expectTypeOf(env).toEqualTypeOf<{
 			number: number;
 			string: string;
 		}>();
+	});
+
+	it('should run the parsing only upon key access', () => {
+		// Arrange.
+		setEnv({
+			number: 'not-a-number',
+		});
+
+		// Act.
+		const env = parseEnv({
+			number: parseNumber,
+		});
+
+		// Assert.
+		expect(() => env.number).toThrow(
+			"Can't parse environment variable `number`",
+		);
 	});
 
 	it("should throw when a key doesn't exist in the env", () => {
@@ -37,13 +52,30 @@ describe('Envist Core', () => {
 			a: 'test',
 		});
 
+		const env = parseEnv({
+			a: parseString,
+			b: parseNumber,
+		});
+
 		// Act & Assert.
-		expect(() =>
-			parseEnv({
-				a: parseString,
-				b: parseNumber,
-			}),
-		).toThrow('Missing environment variable `b`');
+		expect(() => env.b).toThrow('Missing environment variable `b`');
+	});
+
+	it("should throw when trying to access a key that doesn't have a parser set", () => {
+		// Arrange.
+		setEnv({
+			a: 'test',
+			b: 123,
+		});
+
+		const env = parseEnv({
+			a: parseString,
+		});
+
+		// Act & Assert.
+		expect(() => {
+			return env['b' as 'a']; // Simulate runtime error.
+		}).toThrow('No parser was set for `b`');
 	});
 });
 
