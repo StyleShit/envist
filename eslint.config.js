@@ -30,6 +30,7 @@ export default tseslint.config(
 			'no-console': 'error',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unsafe-assignment': 'off',
+			'@typescript-eslint/no-unsafe-return': 'off',
 		},
 	},
 );
