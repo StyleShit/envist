@@ -29,6 +29,23 @@ describe('Envist Core', () => {
 		}>();
 	});
 
+	it('should return an iterable env object', () => {
+		// Arrange.
+		setEnv({
+			number: 123,
+			string: 'test',
+		});
+
+		// Act.
+		const env = parseEnv({
+			number: parseNumber,
+			string: parseString,
+		});
+
+		// Assert.
+		expect(Object.keys(env)).toEqual(['number', 'string']);
+	});
+
 	it('should run the parsing only upon key access', () => {
 		// Arrange.
 		setEnv({

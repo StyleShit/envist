@@ -53,5 +53,16 @@ export function parseEnv<TSchema extends Schema>(
 
 			return target[key];
 		},
+
+		ownKeys() {
+			return Reflect.ownKeys(schema);
+		},
+
+		getOwnPropertyDescriptor() {
+			return {
+				configurable: true,
+				enumerable: true,
+			};
+		},
 	}) as SchemaToEnv<TSchema>;
 }
