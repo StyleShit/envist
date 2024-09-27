@@ -1,3 +1,1 @@
-export default function helloWorld() {
-	return 'Hello World!';
-}
+export { setEnv, parseEnv } from './core';
