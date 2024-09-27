@@ -26,11 +26,7 @@ export function parseEnv<TSchema extends Schema>(
 	schema: TSchema,
 ): Prettify<SchemaToEnv<TSchema>> {
 	return new Proxy({} as Record<string, unknown>, {
-		get(target, key) {
-			if (typeof key === 'symbol') {
-				throw new Error('Symbol keys are not supported');
-			}
-
+		get(target, key: string) {
 			if (key in target) {
 				return target[key];
 			}
