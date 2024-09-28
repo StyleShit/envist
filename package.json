@@ -18,6 +18,11 @@
 			"require": "./dist/index.cjs",
 			"types": "./dist/index.d.ts"
 		},
+		"./valibot": {
+			"import": "./dist/valibot.js",
+			"require": "./dist/valibot.cjs",
+			"types": "./dist/valibot.d.ts"
+		},
 		"./zod": {
 			"import": "./dist/zod.js",
 			"require": "./dist/zod.cjs",
@@ -57,9 +62,13 @@
 		"vitest": "^2.0.5"
 	},
 	"peerDependencies": {
+		"valibot": "^0.42.1",
 		"zod": "^3.23.8"
 	},
 	"peerDependenciesMeta": {
+		"valibot": {
+			"optional": true
+		},
 		"zod": {
 			"optional": true
 		}

@@ -82,7 +82,12 @@ setEnv({
 env.SOME_NUMBER; // Will throw an error since the value is not a number
 ```
 
-## Usage with Zod
+## Adapters
+
+`Envist` supports multiple schema validation libraries. You basically use the same API, but with your custom schemas instead of parsing
+functions. Everything else should work the same.
+
+### Usage with Zod
 
 If you're using Zod, you can use the Zod adapter to define your environment variables:
 
@@ -99,4 +104,19 @@ const env = parseEnv({
 env; // { API_URL: string, DEBUG: boolean }
 ```
 
-You basically use the same API, but with zod schemas instead of parsing functions. Everything else should work the same.
+### Usage with Valibot
+
+If you're using Valibot, you can use the Valibot adapter to define your environment variables:
+
+```typescript
+// packages/app-1/env.ts
+import * as v from 'valibot';
+import { parseEnv } from 'envist/valibot';
+
+const env = parseEnv({
+  API_URL: v.string(),
+  DEBUG: v.boolean(),
+});
+
+env; // { API_URL: string, DEBUG: boolean }
+```
