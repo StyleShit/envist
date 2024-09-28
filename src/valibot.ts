@@ -5,12 +5,12 @@ import { mapObject } from './map-object';
 
 type Schema = Record<string, GenericSchema>;
 
-type WrappedZodSchema<TSchema extends Schema> = {
+type WrappedValibotSchema<TSchema extends Schema> = {
 	[K in keyof TSchema]: (value: unknown) => InferOutput<TSchema[K]>;
 };
 
 export function parseEnv<TSchema extends Schema>(schema: TSchema) {
-	const wrappedSchema: WrappedZodSchema<TSchema> = mapObject(
+	const wrappedSchema: WrappedValibotSchema<TSchema> = mapObject(
 		schema,
 		wrapValibotSchema,
 	);
