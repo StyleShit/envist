@@ -120,3 +120,20 @@ const env = parseEnv({
 
 env; // { API_URL: string, DEBUG: boolean }
 ```
+
+### Usage with Yup
+
+If you're using Yup, you can use the Yup adapter to define your environment variables:
+
+```typescript
+// packages/app-1/env.ts
+import { string, boolean } from 'yup';
+import { parseEnv } from 'envist/yup';
+
+const env = parseEnv({
+  API_URL: string().required(),
+  DEBUG: boolean().required(),
+});
+
+env; // { API_URL: string, DEBUG: boolean }
+```
