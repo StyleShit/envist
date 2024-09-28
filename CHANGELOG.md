@@ -1,5 +1,16 @@
 # envist
 
+## 0.2.0
+
+### Minor Changes
+
+- 83406c4: [Valibot] Add Valibot adapter (#4)
+- 4f477ea: [Yup] Add Yup adapter (#5)
+
+### Patch Changes
+
+- a8c47a5: Reorganize & update documentation
+
 ## 0.1.0
 
 ### Minor Changes
