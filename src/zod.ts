@@ -19,12 +19,6 @@ export function parseEnv<TSchema extends Schema>(schema: TSchema) {
 
 function wrapZodSchema(schema: ZodType) {
 	return (value: unknown) => {
-		const { success, data } = schema.safeParse(value);
-
-		if (!success) {
-			throw new Error('Value is invalid');
-		}
-
-		return data;
+		return schema.parse(value);
 	};
 }
